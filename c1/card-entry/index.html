@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Points Guide — Which Cards Do You Carry?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100%;
+      background: #F7EDE6;
+      font-family: 'Hanken Grotesk', system-ui, sans-serif;
+      color: #1B1714;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: #F6D9CC; color: #1B1714; }
+    input::placeholder { color: #B5A89C; }
+
+    /* ── Brand bar ── */
+    .brand-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px clamp(24px, 4vw, 56px);
+      background: #FFFFFF;
+      border-bottom: 1px solid rgba(27, 23, 20, 0.07);
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #1B1714;
+    }
+
+    .brand-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+      background: #1E5B4B;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-weight: 800;
+      font-size: 17px;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-meta {
+      font-size: 13px;
+      color: #9B8D82;
+      font-weight: 600;
+    }
+
+    /* ── Body ── */
+    .page-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(32px, 5vw, 64px) 24px;
+    }
+
+    /* ── Card ── */
+    .card {
+      width: 100%;
+      max-width: 680px;
+      background: #FFFFFF;
+      border: 1px solid rgba(27, 23, 20, 0.08);
+      border-radius: 22px;
+      box-shadow: 0 30px 55px -34px rgba(96, 62, 40, 0.5);
+      padding: clamp(26px, 4vw, 40px);
+      margin: 0 auto;
+    }
+
+    .card-eyebrow {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: #E8795A;
+      margin-bottom: 12px;
+    }
+
+    .card-headline {
+      font-weight: 700;
+      font-size: clamp(26px, 3vw, 34px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin: 0 0 10px;
+    }
+
+    .card-sub {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #6E6259;
+      margin: 0 0 24px;
+    }
+
+    /* ── Card grid ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .card-btn {
+      position: relative;
+      padding: 13px 8px;
+      border: 1.5px solid rgba(27, 23, 20, 0.16);
+      background: #FFFFFF;
+      border-radius: 12px;
+      font-family: 'Hanken Grotesk', sans-serif;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(27, 23, 20, 0.08);
+      text-align: center;
+      transition: border-color 0.12s, transform 0.12s;
+    }
+
+    .card-btn:hover {
+      border-color: rgba(27, 23, 20, 0.45);
+    }
+
+    /* Selected overlay */
+    .card-btn.is-selected::before {
+      content: '';
+      position: absolute;
+      inset: -1.5px;
+      background: #F7EDE6;
+      border: 2px solid #1B1714;
+      border-radius: 13px;
+      pointer-events: none;
+    }
+
+    .card-btn-name {
+      position: relative;
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: #1B1714;
+    }
+
+    .card-btn-credits {
+      position: relative;
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #9B8D82;
+      margin-top: 3px;
+    }
+
+    .coral { color: #E8795A; }
+
+    /* ── Running total ── */
+    .total-block {
+      padding: 14px 18px;
+      background: #1E5B4B;
+      border-radius: 13px;
+      color: #F4F9F6;
+      font-size: 15px;
+      line-height: 1.45;
+      margin-bottom: 22px;
+    }
+
+    .total-eyebrow {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: #9ED0B5;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    #total-text { color: #C9E2D2; }
+    #total-text.active { color: #F4F9F6; }
+    #total-text strong { color: #FFFFFF; }
+
+    /* ── Email capture ── */
+    .email-section { display: block; }
+    .email-section.hidden { display: none; }
+
+    .email-label {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #9B8D82;
+      margin-bottom: 10px;
+    }
+
+    .email-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .email-input {
+      flex: 1;
+      min-width: 220px;
+      padding: 15px 18px;
+      border: 1.5px solid rgba(27, 23, 20, 0.16);
+      border-radius: 12px;
+      font-family: 'Hanken Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #1B1714;
+      background: #FFFFFF;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .email-input:focus { border-color: #1B1714; }
+
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 15px 24px;
+      border: none;
+      border-radius: 12px;
+      background: #1B1714;
+      color: #FFFFFF;
+      font-family: 'Hanken Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .btn-submit:hover { background: #352E28; }
+    .btn-submit .arrow { font-size: 17px; }
+
+    .email-trust {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      color: #9B8D82;
+      font-weight: 600;
+      margin-top: 12px;
+    }
+    .email-trust .check { color: #1E5B4B; font-weight: 800; }
+
+    /* ── Success state ── */
+    .success-block {
+      display: none;
+      padding: 18px;
+      background: #DCEDE3;
+      border: 1px solid #BFDCCB;
+      border-radius: 13px;
+      text-align: center;
+    }
+
+    .success-block.visible { display: block; }
+
+    .success-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #1E5B4B;
+      margin-bottom: 4px;
+    }
+
+    .success-sub {
+      font-size: 14px;
+      color: #4A6E60;
+      font-weight: 600;
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 540px) {
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Brand bar -->
+  <header class="brand-bar">
+    <a class="brand-logo" href="../">
+      <div class="brand-icon" aria-hidden="true">➤</div>
+      <span class="brand-name">My Points Guide</span>
+    </a>
+    <span class="brand-meta">Takes about 30 seconds</span>
+  </header>
+
+  <!-- Body -->
+  <div class="page-body">
+    <div class="card">
+
+      <div class="card-eyebrow">ALMOST THERE</div>
+      <h1 class="card-headline">Which cards do you carry?</h1>
+      <p class="card-sub">Tap all that apply. Just the names, never the numbers.</p>
+
+      <!-- Card selection grid -->
+      <div class="card-grid" role="group" aria-label="Select your cards">
+
+        <button class="card-btn" id="card-amexPlat" onclick="toggle('amexPlat')" aria-pressed="false">
+          <span class="card-btn-name">Amex Platinum</span>
+          <span class="card-btn-credits">$500 in credits</span>
+        </button>
+
+        <button class="card-btn" id="card-amexGold" onclick="toggle('amexGold')" aria-pressed="false">
+          <span class="card-btn-name">Amex Gold</span>
+          <span class="card-btn-credits">$340 in credits</span>
+        </button>
+
+        <button class="card-btn" id="card-csr" onclick="toggle('csr')" aria-pressed="false">
+          <span class="card-btn-name">Sapphire Reserve</span>
+          <span class="card-btn-credits">$300 in credits</span>
+        </button>
+
+        <button class="card-btn" id="card-csp" onclick="toggle('csp')" aria-pressed="false">
+          <span class="card-btn-name">Sapphire Preferred</span>
+          <span class="card-btn-credits">$50 in credits</span>
+        </button>
+
+        <button class="card-btn" id="card-vx" onclick="toggle('vx')" aria-pressed="false">
+          <span class="card-btn-name">Venture X</span>
+          <span class="card-btn-credits">$400 in credits</span>
+        </button>
+
+        <button class="card-btn" id="card-citi" onclick="toggle('citi')" aria-pressed="false">
+          <span class="card-btn-name">Citi Strata</span>
+          <span class="card-btn-credits">$100 in credits</span>
+        </button>
+
+        <button class="card-btn" id="card-delta" onclick="toggle('delta')" aria-pressed="false">
+          <span class="card-btn-name">Delta SkyMiles</span>
+          <span class="card-btn-credits">$200 in credits</span>
+        </button>
+
+        <button class="card-btn" id="card-bonvoy" onclick="toggle('bonvoy')" aria-pressed="false">
+          <span class="card-btn-name">Marriott Bonvoy</span>
+          <span class="card-btn-credits">$160 in credits</span>
+        </button>
+
+        <button class="card-btn" id="card-other" onclick="toggle('other')" aria-pressed="false">
+          <span class="card-btn-name"><span class="coral">✦</span> Another card</span>
+          <span class="card-btn-credits">we'll look it up</span>
+        </button>
+
+      </div>
+
+      <!-- Running total -->
+      <div class="total-block" aria-live="polite" aria-atomic="true">
+        <span class="total-eyebrow">WHAT WE'LL WATCH</span>
+        <div id="total-text">Tap your cards and we'll total the credits you could be missing.</div>
+      </div>
+
+      <!-- Email capture -->
+      <div class="email-section" id="email-section">
+        <div class="email-label">WHERE SHOULD YOUR PLAN GO?</div>
+        <div class="email-row">
+          <input class="email-input" type="email" id="email-input" placeholder="you@email.com" autocomplete="email">
+          <button class="btn-submit" onclick="submit()">Get My Points Plan <span class="arrow">→</span></button>
+        </div>
+        <div class="email-trust">
+          <span class="check">✓</span>One email with your plan. Alerts before credits expire. Unsubscribe anytime.
+        </div>
+      </div>
+
+      <!-- Success state -->
+      <div class="success-block" id="success-block">
+        <div class="success-title">✓ Done. Your points plan is on its way.</div>
+        <div class="success-sub">We'll email you before any credit expires.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const VALUES = {
+      amexPlat: 500, amexGold: 340, csr: 300,
+      csp: 50,       vx: 400,       citi: 100,
+      delta: 200,    bonvoy: 160,   other: 0
+    };
+
+    const selected = {};
+
+    function toggle(key) {
+      selected[key] = !selected[key];
+
+      const btn = document.getElementById('card-' + key);
+      btn.classList.toggle('is-selected', !!selected[key]);
+      btn.setAttribute('aria-pressed', selected[key] ? 'true' : 'false');
+
+      updateTotal();
+    }
+
+    function updateTotal() {
+      const keys = Object.keys(selected).filter(k => selected[k]);
+      const total = keys.reduce((sum, k) => sum + (VALUES[k] || 0), 0);
+      const n = keys.length;
+      const totalText = document.getElementById('total-text');
+
+      if (n === 0) {
+        totalText.className = '';
+        totalText.innerHTML = 'Tap your cards and we\'ll total the credits you could be missing.';
+      } else {
+        const countLabel = n === 1 ? '1 card' : n + ' cards';
+        totalText.className = 'active';
+        totalText.innerHTML = 'We\'ll watch <strong>$' + total.toLocaleString('en-US') + ' in credits</strong> across ' + countLabel + ' before they expire.';
+      }
+    }
+
+    function submit() {
+      const email = document.getElementById('email-input').value.trim();
+      if (!email || !email.includes('@')) {
+        document.getElementById('email-input').focus();
+        return;
+      }
+      document.getElementById('email-section').classList.add('hidden');
+      document.getElementById('success-block').classList.add('visible');
+    }
+  </script>
+</body>
+</html>
