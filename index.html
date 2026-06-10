@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Points Guide — Test Variants</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Hanken Grotesk', system-ui, sans-serif;
+      background: #F7EDE6;
+      color: #1B1714;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 40px;
+      background: #fff;
+      border-bottom: 1px solid rgba(27,23,20,.07);
+    }
+    .brand-icon {
+      width: 28px; height: 28px;
+      border-radius: 9px;
+      background: #1E5B4B;
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+    }
+    .brand-name { font-weight: 800; font-size: 17px; letter-spacing: -0.01em; }
+    main {
+      flex: 1;
+      max-width: 760px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 56px 24px;
+    }
+    h1 {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      color: #9B8D82;
+      margin-bottom: 28px;
+    }
+    .variant-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .variant-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      border: 1px solid rgba(27,23,20,.08);
+      border-radius: 16px;
+      padding: 20px 24px;
+      text-decoration: none;
+      color: #1B1714;
+      transition: box-shadow 0.15s, transform 0.15s;
+    }
+    .variant-card:hover {
+      box-shadow: 0 8px 24px -8px rgba(27,23,20,.15);
+      transform: translateY(-1px);
+    }
+    .variant-tag {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      color: #9B8D82;
+      margin-bottom: 4px;
+    }
+    .variant-title { font-size: 16px; font-weight: 700; }
+    .variant-pain { font-size: 14px; color: #6E6259; font-weight: 500; margin-top: 3px; }
+    .arrow {
+      font-size: 20px;
+      color: #1E5B4B;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand-icon">➤</div>
+    <span class="brand-name">My Points Guide</span>
+  </header>
+  <main>
+    <h1>TEST VARIANTS</h1>
+    <div class="variant-list">
+      <a class="variant-card" href="./a1/">
+        <div>
+          <div class="variant-tag">VARIANT A1</div>
+          <div class="variant-title">My Points Guide</div>
+          <div class="variant-pain">"No idea what your points are worth" — value comparison</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="variant-card" href="./b1/">
+        <div>
+          <div class="variant-tag">VARIANT B1</div>
+          <div class="variant-title">Transfer Guide</div>
+          <div class="variant-pain">"Transferring points wrong costs you the whole trip"</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </main>
+</body>
+</html>
